@@ -119,10 +119,22 @@ iz knjige prepricati deo o erlang vm
 
 
 \section{Osobine jezika}
+\label{sec:osobine}
 U ovom poglavlju(q: da li su ovo naslovi poglavja) će biti opisane osobine Elixira, osnove njegove sintakse, semantike, kao i podrška za koncepte koji su odlike funkcionalnih i konkurentnih jezika. (q: mesanje vremena) 
 
-Pre nego što započnemo priču o tipovima, par reči o \textbf{Kernelu}. To je podrazumevano okruženje koje se koristi u Elixiru. Ono sadrži primitive jezika kao što su: \textit{aritmetičke operacije}, rukovanje \textit{procesima} i \textit{tipovima}, \textit{makroe} za definisanje novih funkcionalnosti (\textit{funkcija, modula...}), provere \textit{guard-ova} - predefinisanog skupa funkcija i makroa koji proširuju mogućnost \textit{pattern matching}-a itd. Sve ove funkcionalnosti se mogu pozivati bez prefiksa \textit{Kernel} jer su podrazumevano importovane po pokretanju interpretera (ovo važi i ukoliko se program kompajlira). Ukoliko pak korisnik ne želi da uključi pojedine funkcije/makroe može to uraditi korisćenjem \textbf{:except} opcije \textit{import} funkcije. (t: primer)
-\label{sec:osobine}
+Pre nego što započnemo priču o tipovima, bitno je osvrnuti se na koncepte \textit{Patter matching}-a i \textit{Imutabilnosti} promenjivih kao i reći nešto o \textbf{Kernelu}. To je podrazumevano okruženje koje se koristi u Elixiru. Ono sadrži primitive jezika kao što su: \textit{aritmetičke operacije}, rukovanje \textit{procesima} i \textit{tipovima}, \textit{makroe} za definisanje novih funkcionalnosti (\textit{funkcija, modula...}), provere \textit{guard-ova} - predefinisanog skupa funkcija i makroa koji proširuju mogućnost \textit{pattern matching}-a itd. Sve ove funkcionalnosti se mogu pozivati bez prefiksa \textit{Kernel} jer su podrazumevano importovane po pokretanju interpretera (ovo važi i ukoliko se program kompajlira). Ukoliko pak korisnik ne želi da uključi pojedine funkcije/makroe može to uraditi korisćenjem \textbf{:except} opcije \textit{import} funkcije. (t: primer)
+
+\subsection{Pattern matching}
+\label{sec:pattern}
+Definicija \textit{pattern matching}-a bi glasila ovako: proveravanje da li se u data sekvenci tokena može prepoznati neki šablon. Na praktičnom primeru operatora = ovaj koncept će biti jasniji. 
+U većini programskih jezika, operator = je operator dodele, koji levoj strani dodeljuje vrednost izraza na desnoj. U Elixiru ovaj operator, koji se naziva operator \textit{uparivanja} (eng:\textit{matching}) ima drugačiju funkciju koja više podseća na \textit{assertion}. On se uspešno izvršava ako pronađe načina da izjadnači levu stanu (svoj prvi operand) \textit{sa} desnom (drugi perand).
+\begin{primer}
+U narednom parčetu koda \textit{a} je promenljiva koja uspeva da se izjednači sa vrednoću 1, tako sto biva postavljena na tu vrednost. U drugoj naredbi izvršavanje operacije ponovo uspeva jer je vrednost leve strane 1 dok promenljiva sa desne strane već ima vrednost 1 zbog prethodne operacije. Neuspeh sledeće naredbe može izgledati neintuitivno, ali kada se bolje pogleda objašnjenje ove operacija trebalo bi da bude jasno. Naime, Elixir pokušava da izjednači levu stranu, koja je broj 2, koji može imati samo tu vrednosti, sa promenjivom \textit{a} koja ima vrednost 1. Ključna stvar za razumeti je da Elixir ne pokušava da izjednači levu \textit{i} desnu stranu, već levu \textit{sa} desnom.
+(TODO: kod)
+\end{primer}
+\subsection{Imutabilnost}
+\label{sec:tipovi}
+
 \subsection{Ugrađeni tipovi}
 \label{sec:tipovi}
 Elixir implementira desetine tipova. Od njih je važno istaći ugradjene - primitivne tipova, preko kojih su ostali definisani:
@@ -149,12 +161,23 @@ Može biti čudno što se na ovoj listi nisu našle niske ili strukture, ali one
 
 \subsubsection{Atomi, celi i brojevi u pokretno zarezu i opsezi}
 \label{sec:ime}
-\textit{}
+\textit{Atomi} su konstante koje predstavljaju ime. Počinju dvotačkom i njihovo je ime im je i vrednost, šsto znači da će dva atoma sa istim imenom pri poređenju uvek biti isti bez obzira na to da li su kreirani od strane različitih aplikacija.
+
+\textit{Celi brojevi} su slični kao i u većini drugih jezika i mogu se obeležavati korišćenjem dekadne (1234), heksadekadne (0xcafe), oktalne (0o1234) i binarne (0b1010) notacije. Karakter \_ se može koristiti za odvajanje blokova cifara. Bitna stvar je da ne postoji fiksna veličina za čuvanje celih brojeva u memoriji, već se interna reprezentacija raste kako bi obezbedila da broj bude smešten.
+
+\textit{Brojevi u pokretnom zarezu} se u memoriji zapisuju po standardu IEEE 754 (q: ref:), a za zapisivanje konstanti ovog tipa koristi se tačka izmedju najmanje dve cifre. Takodje je moguće koristiti i notaciju koja obuhvata navodjenje eksponenta.
+
 \subsubsection{Procesi, portovi, reference i niske bitova}
 \label{sec:ime}
-Po rečenica o svakom
+\textit{Procesi} predstavljaju pogodnost za rad sa nitima.
+
+\textit{Portovi} reference na spoljne resurse koji omogućavanju interakciju sa spoljnim svetom.
+
+\textit{Reference} jedinstene vrednosti u globalnom kontekstu izvršavanja programa koje se kreiraju pozivom make\_ref funkcije.
+
 \subsubsection{Torke}
 \label{sec:ime}
+\textit{Torke} su zamišljene kao kontejneri elemenata fiksne dužine koji bi trebalo da sadrže svega nekoliko elemenata. Osnovna stvar koja ih razlikuje od \textit{listi} je u semantici njihove upotrebe. \textit{Liste} se koriste kada se manipuliše kolekcijom, dok se operacija čitanja elementa iz \textit{torke} izvršava u konstantnom vremenu, pa se u glavnom koristi kako bi se u nju smestile povratne vrednosti funkcije. Može da sadrži elemente različitog tipa i ove vrednosti su u memoriji zapisane jedna za drugom.
 
 \subsubsection{Liste}
 \label{sec:ime}
@@ -198,14 +221,17 @@ Open source Elixir frameworks:
         \item Gettext - *internacionalizacija i lokalizacija kroz gettext
     \end{itemize}
     Postoje i opcioni paketi u zavisnosti od vaše konfiguracije.
-    \item Nerves - 
+%   Zakomentarisao jer baca compile error
+%    \item Nerves - Definiše novi način za izgradnju ugrađenih sistema koristeći Elixir. Posebno dizajniran za ugrađene sisteme, a ne za desktop ili serverske sisteme.
+    \begin{itemize}
+%        \item Platform - napravljene po zahtevu, minimalni Linux izvedeni iz Buildroot-a koji se pokreće direktno na BEAM VM.
+        \item Framework - spremna biblioteka modula Elixir-a za brzo pokretanje
+%        \item Tooling - moćne alatke komandne linije za upravljanje gradnjom, ažuriranje firmware-a, konfiguriranje uređaja i još mnogo toga
+    \end{itemize}
+%    Zajedno, platforma Nerver, okvir i alati pružaju visoko specijalizovano okruženje za korišćenje Elixir-a.
     \item Sugar - 
     \item Hedwig -
 \end{itemize}
-\subsection{Opste}
-lalalala
-\subsection{Prvi}
-Traaaalalalalal
 
 \section{Napredni koncepti}
 
