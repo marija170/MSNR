@@ -149,7 +149,7 @@ Može biti čudno što se na ovoj listi nisu našle niske ili strukture, ali one
 
 \subsubsection{Atomi, celi i brojevi u pokretno zarezu i opsezi}
 \label{sec:ime}
-Po rečenica o svakom (q: Da li da imamo uopšte objasnjavanja o tipovima)
+\textit{}
 \subsubsection{Procesi, portovi, reference i niske bitova}
 \label{sec:ime}
 Po rečenica o svakom
@@ -166,13 +166,42 @@ Po rečenica o svakom
 \label{sec:ime}
 
 \section{Instalacija}
-Tralalal
+Pre instalacije Elixira neophodno je instalirati Erlang na odgovarajucem operativnom sistemu.
+\begin{itemize}
+    \item Ako koristite operativni sistem Windows, instaliranje Erlang-a je jednostavno. Preuzmite Windows binary fajl, a zatim ga pokrenite i postavite instalaciju. 
+    \item Ako koristite operativni sistem Linux, možete preuzeti izvornu datoteku i kompajlirati je. Ako pristup kompilacije ne funkcioniše ili nije za vas, Erlang Solutions nudi brojne instalacije. Takođe, mnogi različiti upravljači paketima (Debian, Ubuntu, MacPorts, Homebrev, itd.) uključuju Erlang.  Oni teže da rade na najnovijoj verziji različitih operativnih sistema. Erlang je sve više deo standardne instalacije na mnogim sistemima, uključujući i Ubuntu, uglavnom zahvaljujući širenju CouchDB-a. Nakon što ste instalirali Erlang, možete preuzeti prekompiliranu verziju Elixir-a. Neki menadžeri paketa podržavaju Elixir.
+\end{itemize}
+Nakon instalacije imatćete tri nove izvršne datoteke: iex, elixir i elixirc. Ako ste kompajlirali Elixir možete ih pronaći u bin direktoriju. 
+Fajl čuvate sa ekstenzijom .exs, a komandom elixir imeFajla.exs pokrecete program.
+Komande za instalaciju na Ubuntu 14.04/16.04/17.04/18.04 or Debian 7/8/9:
+\begin{itemize}
+%    \item Erlang Solutions repo: wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
+    \item sudo apt-get update
+    \item Instalacija Elixir/OPT: sudo apt-get install esl-erlang
+    \item Instalacija Elixir: sudo apt-get install elixir
+\end{itemize}
 
 \section{Primer}
 Lalalala
 
 \section{Frameworks}
-lalalal
+Open source Elixir frameworks:
+\begin{itemize}
+    \item Phoenix Framework - Pruža jednostavnost u pisanju veb aplikacija kombinovanjem poznatih i poverljivih tehnologija sa dodatnim funkcionalnim idejama. Phoenix alpikacija zavisi od paketa:
+    \begin{itemize}
+        \item Ecto - jezik integrisan upitima i omotom baze podataka
+        \item Phoenix - Phoenix veb framework
+        \item Phoenix.js - Phoenix Channels JavaScript klijent
+        \item Phoenix PubSub - distribuirani pub/sub sistem sa podrškom za prisustvo
+        \item Phoenix HTML - pogodnosti za rad sa HTML-om u Phoenix-u
+        \item Plug - specifikacija i pogodnosti za kompatibilne module između veb aplikacija
+        \item Gettext - *internacionalizacija i lokalizacija kroz gettext
+    \end{itemize}
+    Postoje i opcioni paketi u zavisnosti od vaše konfiguracije.
+    \item Nerves - 
+    \item Sugar - 
+    \item Hedwig -
+\end{itemize}
 \subsection{Opste}
 lalalala
 \subsection{Prvi}
