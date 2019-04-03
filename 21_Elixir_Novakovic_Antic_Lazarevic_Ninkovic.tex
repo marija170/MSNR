@@ -83,12 +83,110 @@ Jezik je najviše korišćen od strane telekomunikacionih kompanija, a glavni fo
 
 Tokom 2010., Jose Valim, u to vreme zaposlen na poziciji programera u kompaniji Plataformatec, radio je na poboljšanju performansi Ruby on Rails framework-a na višejezgarnim sistemima i bio je sve više frustriran ovim poslom. Shvatio je da Ruby nije bio dovoljno dobro dizajniran da reši problem konkurentnosti, pa je započeo istraživanje drugih tehnologija koje bi bile prihvatljivije. Tako je otkrio je Erlang, i upravo ga je interesovanje prema Erlangovoj virtuelnoj mašini podstaklo da započne pisanje Elixira. Uticaj projekta na kome je do tada radio odrazio se na to da Elixir ima sintaksu koja je nalik na Ruby-jevu. Ovaj jezik se pokazao veoma dobro pri upravljanju milionima simultanih konekcija: u 2015. Phoenix - zabeleženo upravljanje 2 miliona WebSocket konekcija, dok je u 2017. za skalirani Elixir zabeležena obrada 5 miliona istovremenih korisnika. (Q: Mozda bismo mogli neki grafik ili sliku o ovome) Elixir se danas koristi u velikim kompanijama, kao što su Pinterest, Moz, a upotrebu nalazi čak i u bankarskim sistemima. (q: pitati jel medium relevantan)( ref: https://medium.com/margobank/why-elixir-546427542c)
 
-%Elixir je dizajniran da bude proširiv, omogućavajući developerima da prirodno prošire jezik na određene domene, kako bi povećali svoju produktivnost. Danas se najvise koristi za web programiranje, ali ima udela i u projektima vezanim za robotiku.
+\section{Erlang VM i OTP}
+1. Mora da se navede da je elixir nastao iz erlanga
+    - Pise u uvodu a i u istorijatu, ali mozes to da napises kao pocetak poglavlja. Tipa "Osim sto je Erlang kao motivacija uticao na pravljenje Elixira, moze se reci da je Elixir nastao iz Erlanga. On se izvrsava na Erlangovoj virtualnoj masini i prosiruje njegov skup funckionalnosti, pa je vazno opisati koncepte funkcionisanja ove VM." (Prosrao sam se carski, al kontas poentu hahahaha)
+
+2. Da se kompajliranjem elixir prevodi u .beam fajl koji se moze izvrsiti u okviru erlang vm
+
+3. Sta cini erlang vm tako dobrom za konkurentnost
+
+u .tex fajlu se nalazi zakomentarisan materijal koji treba preraditi u smislenu celinu
+
+poredjenje jvm i erts http://liyunzhen.blogspot.com/2017/03/tech-note-java-virtual-machinejvm-vs.html
+
+iz knjige prepricati deo o erlang vm
+
+% In the Erlang VM, all code runs in tiny concurrent processes, each with its
+% own state. Processes talk to each other via messages. And since all communi-
+% cation happens by message-passing, exchanging messages between different
+% machines on the same network is handled transparently by the VM, making
+% it a perfect environment for building distributed software!
+% However, I felt there was still a gap in the Erlang ecosystem. I missed first-
+% class support for some of the features I find necessary in my daily work, things
+% such as metaprogramming, polymorphism, and first-class tooling. From this
+% need, Elixir was born.
+
+% In Erlang/Erlang virtual machine case, I was forced to think the relationship among OS processes, OS threads and CPU cores.  To make it simple, 
+
+% 1. An OS process is a kind of resource center of execution units, which are called  threads. 
+
+% 2. An OS process must contains at least one thread. Each thread is executed by one CPU core. (Normal applications normally contain several threads. For example, Microsoft office word uses at least two threads, one for data-saving, one for UI display. So that office word could auto-save the document while the user is editing.) 
+
+% 3. Processes share nothing among themselves. OS processes shares no memory. Erlang processes shares no memory.
+
+% 4. An Erlang related OS process will spawn an OS thread for each CPU core. Such OS thread is called scheduler, which could manage a large number of Erlang process.
 
 
-%Elixir kôd se pokreće unutar Elixir procesora. Različiti delovi kôda se mogu pokrenuti u različitim procesima i mogu da komunicariju međusobno. Možemo pisati kôd koji se pokreće paralelno. 
+\section{Osobine jezika}
+U ovom poglavlju(q: da li su ovo naslovi poglavja) će biti opisane osobine Elixira, osnove njegove sintakse, semantike, kao i podrška za koncepte koji su odlike funkcionalnih i konkurentnih jezika. (q: mesanje vremena) 
 
-%Veoma je tolerantan na greške. Koristi OTP (Open Telecom Platform) što je framework za Erlang koji jeziku omogućava da ukoliko se desi neka greška u vašem kôdu, samo taj proces stane i onda se restartuje. S obzirom na to da je kôd paralelizovan, ta greška neće uticati na ostale procese.
+Pre nego što započnemo priču o tipovima, par reči o \textbf{Kernelu}. To je podrazumevano okruženje koje se koristi u Elixiru. Ono sadrži primitive jezika kao što su: \textit{aritmetičke operacije}, rukovanje \textit{procesima} i \textit{tipovima}, \textit{makroe} za definisanje novih funkcionalnosti (\textit{funkcija, modula...}), provere \textit{guard-ova} - predefinisanog skupa funkcija i makroa koji proširuju mogućnost \textit{pattern matching}-a itd. Sve ove funkcionalnosti se mogu pozivati bez prefiksa \textit{Kernel} jer su podrazumevano importovane po pokretanju interpretera (ovo važi i ukoliko se program kompajlira). Ukoliko pak korisnik ne želi da uključi pojedine funkcije/makroe može to uraditi korisćenjem \textbf{:except} opcije \textit{import} funkcije. (t: primer)
+\label{sec:osobine}
+\subsection{Ugrađeni tipovi}
+\label{sec:tipovi}
+Elixir implementira desetine tipova. Od njih je važno istaći ugradjene - primitivne tipova, preko kojih su ostali definisani:
+\begin{itemize}
+  \item Atomi (\textit{Atom})
+  \item Celi brojevi (\textit{Integer})
+  \item Brojevi u pokretnom zarezu(\textit{Float})
+  \item Procesi (\textit{Process})
+  \item Portovi (\textit{Port})
+  \item Uređene torke (\textit{Tuple})
+  \item Liste (\textit{List})
+  \item Mape (\textit{Map})
+  \item Funkcije (\textit{Function})
+  \item Niske bitova 
+  \item Reference
+\end{itemize}
+
+U zagradama nakon tipa, osim u poslednja dva koji nemaju odgovarajuće module, navena su imena modula koji sadrže funckije koje se koriste za operacije nad tim tipom. Imena ovih modula ne treba mešati sa primitivnim tipovima navedenim gore, iako oni sami jesu tip. Oni se mogu zamisliti kao neka vrsta omotača oko primitivnog tipa koji obezbedjuje bogatije funkcionalnosti nad njime. 
+\begin{primer}
+Literal [...] može biti iskorišćen da se napravi lista (primitiva), nad njom je moguće iskoristiti operator | koji bi je dekomponovao na glavu i rep ili od nje napravio novu listu (detalji u predstojećim poglavljima). U modulu \textit{List} imamo funkciju \textit{last} koja kada se primeni na listu, kao rezultat vraća njen poslednji element.
+\end{primer}
+
+Može biti čudno što se na ovoj listi nisu našle niske ili strukture, ali one su deo složenih tipova podržanih od strane Elixira. Takodje, postoji debata o tome da li su regularni izrazi i opsezi (\textit{Ranges}) tipovi za sebe i u nekoj literaturi se posmatraju ovako iako su tehnički strukture. (ref: Programming Elixir 1.3)
+
+\subsubsection{Atomi, celi i brojevi u pokretno zarezu i opsezi}
+\label{sec:ime}
+Po rečenica o svakom (q: Da li da imamo uopšte objasnjavanja o tipovima)
+\subsubsection{Procesi, portovi, reference i niske bitova}
+\label{sec:ime}
+Po rečenica o svakom
+\subsubsection{Torke}
+\label{sec:ime}
+
+\subsubsection{Liste}
+\label{sec:ime}
+(t: Mozda pre tipova immutabilnost i pattern matching zbog ovoga)
+\subsubsection{Mape}
+\label{sec:ime}
+
+\subsection{Anonimne funkcije}
+\label{sec:ime}
+
+\section{Instalacija}
+Tralalal
+
+\section{Primer}
+Lalalala
+
+\section{Frameworks}
+lalalal
+\subsection{Opste}
+lalalala
+\subsection{Prvi}
+Traaaalalalalal
+
+\section{Napredni koncepti}
+
+\section{Poredjenje}
+
+
+%2. Elixir je dizajniran da bude proširiv, omogućavajući developerima da prirodno prošire jezik na određene domene, kako bi povećali svoju produktivnost. Danas se najvise koristi za web programiranje, ali ima udela i u projektima vezanim za robotiku.
+% Pošto je Elixir izgrađen na makroima lako je pomisliti da ih svaka biblioteka zahteva, međutim to nije slučaj. Makroi treba da budu rezervisani za specijalizovane slučajeve gde rešenje ne može biti lako implementirano kao obične funkcije, jer se vrši generisanje koda. U nekim slučajevima, izbor makronaredbi je neophodan.Glavna odgovornost pisanja čistog koda sa makroima pada na programere. Makroe je teže pisati od običnih funkcija Elixir-a i smatra se lošim stilom da ih koristimo kada nisu neophodni. Elixir već pruža mehanizme za pisanje vašeg svakodnevnog koda na jednostavan i čitljiv način koristeći svoje strukture podataka i funkcije. Makroe treba koristiti samo kao krajnje sredstvo. 
+
+%3. Možemo pisati kôd koji se pokreće paralelno. Elixir kôd se pokreće unutar Elixir procesora. Različiti delovi kôda se mogu pokrenuti u različitim procesima i mogu komunicirati međusobno. Veoma je tolerantan na greške. Koristi OTP (Open Telecom Platform) što je framework za Erlang koji jeziku omogućava da ukoliko se desi neka greška u vašem kôdu, samo taj proces stane i onda se restartuje. S obzirom na to da je kôd paralelizovan, ta greška neće uticati na ostale procese.
 
 \section{Osnovna uputstva}
 Vaš seminarski rad mora da sadrži najmanje jednu \textbf{sliku}, najmanje jednu \textbf{tabelu} i najmanje \textbf{sedam referenci} u spisku literature. Najmanje jedna slika treba da bude originalna i da predstavlja neke podatke koje ste Vi osmislili da treba da prezentujete u svom radu. Isto važi i za najmanje jednu tabelu. 	Od referenci, neophodno je imati bar jednu \textbf{knjigu}, bar jedan \textbf{naučni članak} iz odgovarajućeg časopisa i bar jednu adekvatnu \textbf{veb adresu}. 
