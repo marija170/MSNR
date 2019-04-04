@@ -6,14 +6,12 @@
 \usepackage[T2A]{fontenc} % enable Cyrillic fonts
 \usepackage[utf8]{inputenc} % make weird characters work
 \usepackage{graphicx}
-
+\usepackage{listings}
 \usepackage[english,serbian]{babel}
 %\usepackage[english,serbianc]{babel} %ukljuciti babel sa ovim opcijama, umesto gornjim, ukoliko se koristi cirilica
 
 \usepackage[unicode]{hyperref}
 \hypersetup{colorlinks,citecolor=green,filecolor=green,linkcolor=blue,urlcolor=blue}
-
-\usepackage{listings}
 
 %\newtheorem{primer}{Пример}[section] %ćirilični primer
 \newtheorem{primer}{Primer}[section]
@@ -71,7 +69,7 @@ U ovom tekstu je ukratko prikazana osnovna forma seminarskog rada. Obratite paž
 \section{Uvod}
 \label{sec:uvod}
 
-Elixir(Eliksir) je programski jezik koji se prvi put pojavljuje u javnosti 2012. godine kao projekat kompanije Plataformatec. Ovaj funkcionalni, dinamičan programski jezik*(footnote: Diskusija o specificnoj paradigmi u daljem tekstu) se pokreće na Erlang vituelnoj mašini pa samim tim i deli pogodna svojstva kao što su konkurentnost i tolerisanje grešaka, koje dolaze sa ovim okruženjem. Njegov tvorac, Jose Valim, navodi da je motivacija za pravljenje ovog jezika upravo bila ljubav prema ovoj virtualnoj mašini i ekosistemu, ali i njeni nedostaci. Iz tačke gledišta olakšavanja svakodnevnog razvoja sofvera, koncepti poput metaprogramiranje - tehnika kojom programi imaju mogućnost da druge programe posmatraju kao svoje podatke i na taj način čitaju pa čak i modifikuju njihov, a samim tim i svoj kod u vreme izvršavanja, zatim polimorfizam (pretp. da čitaoc zna, pitati prof.) i makroi kao i podrška za alate, bili su neke od nepostojećih karakteristika ovog sistema koje bi Elixir trebalo da nadomesti. Cilj ovog rada je da čitaoca bliže upozna sa osobinama, funkcionalnostima i specifičnostima ovog jezika kao i da kroz uporedni prikaz sa jezicima koji dele slične kocepte ili imaju istu upotrebu u određenim domenima, prikaže make i prednosti Elixira.
+Elixir(Eliksir) je programski jezik koji se prvi put pojavljuje u javnosti 2012. godine kao projekat kompanije Plataformatec. Ovaj funkcionalni, dinamičan programski jezik*(footnote: Diskusija o specificnoj paradigmi u daljem tekstu) se pokreće na Erlang vituelnoj mašini pa samim tim i deli pogodna svojstva kao što su konkurentnost i tolerisanje grešaka, koje dolaze sa ovim okruženjem. Njegov tvorac, Jose Valim, navodi da je motivacija za pravljenje ovog jezika upravo bila ljubav prema ovoj virtualnoj mašini i ekosistemu, ali i njeni nedostaci. Iz tačke gledišta olakšavanja svakodnevnog razvoja sofvera, koncepti poput metaprogramiranje - tehnika kojom programi imaju mogućnost da druge programe posmatraju kao svoje podatke i na taj način čitaju pa čak i modifikuju njihov, a samim tim i svoj kod u vreme izvršavanja, zatim polimorfizam (pretp. da čitaoc zna, pitati prof.) i makroi kao i podrška za alate, bili su neke od nepostojećih karakteristika ovog sistema koje bi Elixir trebalo da nadomesti. Cilj ovog rada je da čitaoca bliže upozna sa osobinama, funkcionalnostima i specifičnostima ovog jezika kao i da kroz uporedni prikaz sa jezicima koji dele slične kocepte ili imaju istu upotrebu u određenim domenima, prikaže mane i prednosti Elixira.
 % Kada budete predavali seminarski rad, imenujete datoteke tako da sadrže redni broj teme, temu seminarskog rada, kao i prezimena članova grupe. Precizna uputstva na temu imenovnja će biti data na formi za predaju seminarskog rada. Predaja seminarskih radova biće isključivo preko veb forme, a NE slanjem mejla. Link na formu će biti dat u okviru obaveštenja na strani kursa. Vodite računa da prilikom predavanja seminarskog rada predate samo one fajlove koji su neophodni za ponovno generisanje pdf datoteke. To znači da pomoćne fajlove, kao što su .log, .out, .blg, .toc, .aux i slično, \textbf{ne treba predavati}.
 
 \section{Istorijat}
@@ -81,41 +79,22 @@ Tokom 1980ih, telekomunikaciona kompanija Ericsson ispitivala je problem konkure
 
 Jezik je najviše korišćen od strane telekomunikacionih kompanija, a glavni fokus je bila distribucija, tolerantnost na otkaze u sistemu, i hot-swappinga koda (mogućnost izmene koda programa bez potrebe prekida izvršavanja). U 1998. Ericsson se odlučuje da kod programskoj jezika Erlang učini dostupan svima i proglašava ga otvorenim (open source). Od tada je jezik korišćen u veoma specifičnim projektima, kao što je dobro poznati broker za poruke RabbitMQ, XMPP server “ejabberd”, i Apache CouchDB, koji je jedna od najpoznatijih distribuiranih baza podataka. Neke kompanije koriste Erlang za telekomunikacione proizvode, a primer su WhatsApp i Riot Games - kompanija koja je napravila igru League of Legends.
 
-Tokom 2010., Jose Valim, u to vreme zaposlen na poziciji programera u kompaniji Plataformatec, radio je na poboljšanju performansi Ruby on Rails framework-a na višejezgarnim sistemima i bio je sve više frustriran ovim poslom. Shvatio je da Ruby nije bio dovoljno dobro dizajniran da reši problem konkurentnosti, pa je započeo istraživanje drugih tehnologija koje bi bile prihvatljivije. Tako je otkrio je Erlang, i upravo ga je interesovanje prema Erlangovoj virtuelnoj mašini podstaklo da započne pisanje Elixira. Uticaj projekta na kome je do tada radio odrazio se na to da Elixir ima sintaksu koja je nalik na Ruby-jevu. Ovaj jezik se pokazao veoma dobro pri upravljanju milionima simultanih konekcija: u 2015. Phoenix - zabeleženo upravljanje 2 miliona WebSocket konekcija, dok je u 2017. za skalirani Elixir zabeležena obrada 5 miliona istovremenih korisnika. (Q: Mozda bismo mogli neki grafik ili sliku o ovome) Elixir se danas koristi u velikim kompanijama, kao što su Pinterest, Moz, a upotrebu nalazi čak i u bankarskim sistemima. (q: pitati jel medium relevantan)( ref: https://medium.com/margobank/why-elixir-546427542c)
+Tokom 2010., Jose Valim, u to vreme zaposlen na poziciji programera u kompaniji Plataformatec, radio je na poboljšanju performansi Ruby on Rails framework-a na višejezgarnim sistemima i bio je sve više frustriran ovim poslom. Shvatio je da Ruby nije bio dovoljno dobro dizajniran da reši problem konkurentnosti, pa je započeo istraživanje drugih tehnologija koje bi bile prihvatljivije. Tako je otkrio Erlang, i upravo ga je interesovanje prema Erlangovoj virtuelnoj mašini podstaklo da započne pisanje Elixira. Uticaj projekta na kome je do tada radio odrazio se na to da Elixir ima sintaksu koja je nalik na Ruby-jevu. Ovaj jezik se pokazao veoma dobro pri upravljanju milionima simultanih konekcija: u 2015. Phoenix - zabeleženo upravljanje 2 miliona WebSocket konekcija, dok je u 2017. za skalirani Elixir zabeležena obrada 5 miliona istovremenih korisnika. (Q: Mozda bismo mogli neki grafik ili sliku o ovome) Elixir se danas koristi u velikim kompanijama, kao što su Pinterest, Moz, a upotrebu nalazi čak i u bankarskim sistemima. (q: pitati jel medium relevantan)( ref: https://medium.com/margobank/why-elixir-546427542c)
 
-\section{Erlang VM i OTP}
-1. Mora da se navede da je elixir nastao iz erlanga
-    - Pise u uvodu a i u istorijatu, ali mozes to da napises kao pocetak poglavlja. Tipa "Osim sto je Erlang kao motivacija uticao na pravljenje Elixira, moze se reci da je Elixir nastao iz Erlanga. On se izvrsava na Erlangovoj virtualnoj masini i prosiruje njegov skup funckionalnosti, pa je vazno opisati koncepte funkcionisanja ove VM." (Prosrao sam se carski, al kontas poentu hahahaha)
+\section{BEAM - Erlang virtualna masina}
 
-2. Da se kompajliranjem elixir prevodi u .beam fajl koji se moze izvrsiti u okviru erlang vm
+Kako je Elixir zapravo nastao pro\v{s}irivanjem funkcionalnosti BEAM-a (Erlangove virtualne ma\v{s}ine), sa ciljem da se zadr\v{z}i kompatibilnost sa Erlang ekosistemom, va\v{z}no je opisati koncepte funkcionisanja Erlang virtualne ma\v{s}ine na kojoj se  kompajlirani Elixir kod izvr\v{s}ava.
 
-3. Sta cini erlang vm tako dobrom za konkurentnost
+Originalno BEAM je bila skra\'{c}enica za Bogdan's Erlang Abstract Machine, po Bogumil "Bogdan" Hausman koji je napisao originalnu verziju virtualne ma\v{s}ine, ali ime se takodje moze tuma\v{c}iti kao Björn's Erlang Abstract Machine, po Björn Gustavsson, koji pi\v{s}e i odr\v{z}ava trenutnu verziju.
 
-u .tex fajlu se nalazi zakomentarisan materijal koji treba preraditi u smislenu celinu
+BEAM predstavlja jezgro Erlang Open Telecom Platform (Erlang OTP), platforme koja se sastoji od Erlang Run-Time System(ERTS) i  kolekcije prebuilt middleware, biblioteka i alata pisanih u Erlangu.
 
-poredjenje jvm i erts http://liyunzhen.blogspot.com/2017/03/tech-note-java-virtual-machinejvm-vs.html
+Erlang Run-Time System (ERTS) predstavlja modul zadu\v{z}en za kompilaciju Erlang i Elixir izvornog koda u bytecode koji se onda izvr\v{s}ava u okviru BEAM-a.
 
-iz knjige prepricati deo o erlang vm
+U okviru BEAM-a, sav kod se izvr\v{s}ava u sitnim konkurentnim procesima, pri \v{c}emu procesi nisu procesi operativnog sistema, vec Erlang procesi, \v{s}to je mogu\'{c}e upravo zbog izvr\v{s}avanja u okviru BEAM virtualne ma\v{s}ine. Svaki od procesa je memorijski nezavistan i sva me\dj{}uprocesna komunikacije se odvija razmenjivanje poruka, \v{c}ime se obezbe\dj{}uje koncept konkurentnosti slanjem poruka $(eng. message passing concurrency)$. 
 
-% In the Erlang VM, all code runs in tiny concurrent processes, each with its
-% own state. Processes talk to each other via messages. And since all communi-
-% cation happens by message-passing, exchanging messages between different
-% machines on the same network is handled transparently by the VM, making
-% it a perfect environment for building distributed software!
-% However, I felt there was still a gap in the Erlang ecosystem. I missed first-
-% class support for some of the features I find necessary in my daily work, things
-% such as metaprogramming, polymorphism, and first-class tooling. From this
-% need, Elixir was born.
+Prevodjenjem Elixir source fajla generise se .beam fajl koji sadrzi bytecode koji se moze izvrsavati u okviru BEAM-a.
 
-% In Erlang/Erlang virtual machine case, I was forced to think the relationship among OS processes, OS threads and CPU cores.  To make it simple, 
-
-% 1. An OS process is a kind of resource center of execution units, which are called  threads. 
-
-% 2. An OS process must contains at least one thread. Each thread is executed by one CPU core. (Normal applications normally contain several threads. For example, Microsoft office word uses at least two threads, one for data-saving, one for UI display. So that office word could auto-save the document while the user is editing.) 
-
-% 3. Processes share nothing among themselves. OS processes shares no memory. Erlang processes shares no memory.
-
-% 4. An Erlang related OS process will spawn an OS thread for each CPU core. Such OS thread is called scheduler, which could manage a large number of Erlang process.
 
 
 \section{Osobine jezika}
@@ -188,6 +167,103 @@ Može biti čudno što se na ovoj listi nisu našle niske ili strukture, ali one
 \subsection{Anonimne funkcije}
 \label{sec:ime}
 
+\subsection{Moduli i imenovane funkcije}
+\label{sec:ime}
+Kada program sadrži previše linija koda, poželjno je strukturirati ga. U elixir-u kod se može izdvojiti u imenovane funkcije koje se dalje organizuju u module, čak šta više moraju se pisati u okviru njih. 
+Jednostavan primer modula Times koji sadrži jednu funkciju, double, prikazan je ispod. 
+\begin{verbatim}
+defmodule Times do
+    def double(n) do
+        n * 2
+    end
+end   
+\end{verbatim}
+
+Jedan način grupisanja izraza i prosleđivanje istih drugom kodu je do..end blok. Koriste se u modulima, imenovanim funkcijama, strukturama kontrole (control structures) i na bilo kom drugom mestu gde kod treba da se koristi kao entitet. Može se proslediti i više linija grupisanjem zagradama:
+\begin{verbatim}
+def greet(greeting, name), do: (
+    IO.puts greeting
+    IO.puts "How're you doing, #{name}?"
+)
+\end{verbatim}
+\subsubsection{Pozivi funkcija i pattern matching}
+Za razliku od anonimnih funkcija u ovom slučaju moramo pisati funkciju više puta, svaki put sa listom parametara i telom funkcije. Kada se funkcija pozove, elixir pokušava da poklopi argumente sa listom parametara prve definicije, ukoliko ne može da ih poklopi nastavlja sa sledećom definicijom iste funkcije itd. dok ne nađe pravog kandidata.
+\begin{verbatim}
+defmodule Factorial do
+    def of(0), do: 1
+    def of(n), do: n * of(n-1)
+end
+\end{verbatim}
+
+Važno je obratiti pažnju na redosled pisanja funkcija jer Elixir uvek pokušava od vrha ka dole i izvršava se prva koja se poklopila.
+
+\subsubsection{Guard clauses}
+Pattern matching omogućava Elixir-u da odluči koju funkciju će pozvati na osnovu argumenata koji su prosleđeni. Međutim ukoliko treba razlikovati na osnovu tipova ili na osnovu nekih testova koji uključuju vrednosti koristimo guard clauses. To su zapravo predikati koji su pridruženi definiciji funkcije koristeći ključnu reč when jednom ili više puta. 
+\begin{verbatim}
+defmodule Guard do
+    def what_is(x) when is_number(x) do
+        IO.puts "#{x} is a number"
+    end
+    def what_is(x) when is_list(x) do
+        IO.puts "#{inspect(x)} is a list"
+    end
+end
+\end{verbatim}
+
+\subsubsection{Podrazumevani parametri}
+Kada se definiše imenovana funkcija  može se dati podrazumevana vrednost bilo kom parametru korišćenjem sintakse  param \textbackslash \textbackslash  vrednost. Pri pozivu funkcije koja ima podrazumevane vrednosti, poredi se broj argumenata koji se prosleđuju sa brojem obaveznih vrednosti. Ukoliko je broj argumenata manji  nema poklapanja. Ukoliko je njihov broj jednak, obavezne vrednosti uzimaju vrednosti argumenata, a ostali parametri uzimaju podrazumevane vrednosti. U slučaju da je broj prosleđenih argumenata veći od obaveznih, elixir može da pregazi podrazumevane vrednosti nekih ili svih parametara tako što ide sa leva na desno.
+\begin{verbatim}
+defmodule Example do
+    def func(p1, p2 \\ 2, p3 \\ 3, p4) do
+        IO.inspect [p1, p2, p3, p4]
+    end
+end
+Example.func("a", "b") # => ["a",2,3,"b"]
+Example.func("a", "b", "c") # => ["a","b",3,"c"]
+Example.func("a", "b", "c", "d") # => ["a","b","c","d"]
+\end{verbatim}
+
+\subsubsection{Pipe Operator |>}
+Operator |> uzima rezultat izraza sa leve strane i ubacuje ga kao prvi parametar poziva funkcije sa desne strane. U suštini val |> f(a, b) je isto što i f(val, a, b). Ukoliko npr. imamo:
+\begin{verbatim}
+filing = prepare_filing(sales_tax(
+Orders.for_customers(DB.find_customers), 2016))
+\end{verbatim}
+Možemo to zapisati kao:
+\begin{verbatim}
+filing = DB.find_customers
+        |> Orders.for_customers
+        |> sales_tax(2016)
+        |> prepare_filing
+\end{verbatim}
+
+\subsubsection{Direktive u okviru modula}
+\begin{itemize}
+    \item Import direktiva - dovlači funkcije i makroe nekog modula u trenutni opseg; eliminiše se potreba za ponavljanjem imena modula.
+    \begin{verbatim}
+import Module [, only:|except: ]
+    \end{verbatim}
+    Only: ili except: su opcioni parametri  praćeni  listom parova naziv:broj parametara. Pogodni su za kontrolu koje funkcije ili makroi su importovani.
+    \item Alias direktiva - kreira alias za modul i samim tim skraćuje pisanje
+    Na primer:
+    \begin{verbatim}
+    alias My.Other.Module.Parser, as: Parser
+    \end{verbatim}
+    Možemo napisati i bez as: iz razloga što je uobičajeno ponašanje da se uzima poslednji deo imena modula.
+    \item Require direktiva - obezbeđuje da su definicije makroa dostupne prilikom prevođenja.
+\end{itemize}
+
+\subsubsection{Atributi modula}
+Atributom modula se naziva svaka stavka metapodatka i identifikovan je imenom. U okviru modula može se pristupiti atributu stavljajući prefiks ‘@’  ispred imena. Dodeljivanje vrednosti atributu vrši se sa @ime vrednost i ono se ne može obavljati u okviru funkcije.
+\begin{verbatim}
+defmodule Example do
+    @author "Dave Thomas"
+    def get_author do
+        @author
+    end
+end
+\end{verbatim}
+Ovi atributi nisu promenljive u konvencionalnom smislu, i uglavnom se upotrebljavaju kao što Java ili Ruby programeri upotrebljavaju konstante.
 \section{Instalacija}
 Pre instalacije Elixira neophodno je instalirati Erlang na odgovarajucem operativnom sistemu.
 \begin{itemize}
@@ -221,16 +297,31 @@ Open source Elixir frameworks:
         \item Gettext - *internacionalizacija i lokalizacija kroz gettext
     \end{itemize}
     Postoje i opcioni paketi u zavisnosti od vaše konfiguracije.
-%   Zakomentarisao jer baca compile error
-%    \item Nerves - Definiše novi način za izgradnju ugrađenih sistema koristeći Elixir. Posebno dizajniran za ugrađene sisteme, a ne za desktop ili serverske sisteme.
+
+    \item Nerves - Definiše novi način za izgradnju ugrađenih sistema koristeći Elixir. Posebno dizajniran za ugrađene sisteme, a ne za desktop ili serverske sisteme. 
     \begin{itemize}
-%        \item Platform - napravljene po zahtevu, minimalni Linux izvedeni iz Buildroot-a koji se pokreće direktno na BEAM VM.
+        \item Platform - napravljene po zahtevu, minimalni Linux izvedeni iz Buildroot-a koji se pokreće direktno na BEAM VM
         \item Framework - spremna biblioteka modula Elixir-a za brzo pokretanje
-%        \item Tooling - moćne alatke komandne linije za upravljanje gradnjom, ažuriranje firmware-a, konfiguriranje uređaja i još mnogo toga
+        \item Tooling - moćne alatke komandne linije za upravljanje gradnjom, ažuriranje firmware-a, konfigurisanje uređaja i još mnogo toga
     \end{itemize}
-%    Zajedno, platforma Nerver, okvir i alati pružaju visoko specijalizovano okruženje za korišćenje Elixir-a.
+    Zajedno, platforma Nerves, okvir i alati pružaju visoko specijalizovano okruženje za korišćenje Elixir-a.
     \item Sugar - 
-    \item Hedwig -
+    \item Hedwig - Dizajniran za dva slučaja upotrebe: 
+    \begin{itemize}
+        \item jedinstvene, samostalne OTP aplikacije
+        \item uključen kao zavisnost od drugih OTP aplikacija
+    \end{itemize}
+%    You can spawn multiple bots at run-time with different configurations.
+    Hedwing se isporučuje sa adapteron za konzolu kako bi omogućio brzo pokretanje. Odličan je za testiranje kako će bot odgovoriti na poruke koje dobije.
+    \item Plug je specifikacija za *composable modele između veb aplikacija i adapteri za konekciju za različite veb servere u Erlang VM.
+    \item Trot je mirko-okvir baziran na Plug-u i Cowboy-u. Cilj Trot-a je da olakša upotrebu uobičajnih obrazaca u Plug-u, posebno prilikom pisanja API-ja bez žrtvovanja fleksibilnosti.
+    \item Placid
+    \item Kitto
+    \item Maru
+    \item Anubis omogućuje kreiranje aplikacije komandne linije uz pomoć više komandi (kao što je git), bez potrebe da definiše više miks zadataka. 
+    %Može biti korisno kada se izvoze aplikacije komandne linije kao escript. 
+    \item Urna
+    \item Flowex
 \end{itemize}
 
 \section{Napredni koncepti}
@@ -476,4 +567,3 @@ Ovde pišem dodatne stvari, ukoliko za time ima potrebe.
 
 
 \end{document}
-
