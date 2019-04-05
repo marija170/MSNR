@@ -2,6 +2,7 @@
 \documentclass[a4paper]{article}
 
 \usepackage{color}
+\usepackage{xcolor}
 \usepackage{url}
 \usepackage[T2A]{fontenc} % enable Cyrillic fonts
 \usepackage[utf8]{inputenc} % make weird characters work
@@ -19,6 +20,37 @@
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{commentgreen}{RGB}{2,112,10}
+\definecolor{eminence}{RGB}{108,48,130}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{129,20,83}
+\definecolor{pink}{rgb}{0.858,0.188,0.478}
+
+\lstdefinelanguage{Elixir}{
+    morekeywords={case,catch,def,do,else,false,%
+        use,alias,receive,timeout,defmacro,defp,%
+        for,if,import,defmodule,defprotocol,%
+        nil,defmacrop,defoverridable,defimpl,%
+        super,fn,raise,true,try,end,with,%
+        unless},
+    otherkeywords={<-,->, |>, \%\{, \}, \{, \, (, )},
+    keywords=[2]{IO},
+    keywords=[3]{iex},
+    sensitive=true,
+    morecomment=[l]{\#},
+    morecomment=[n]{/*}{*/},
+    morecomment=[s][\color{purple}]{:}{\ },
+    morestring=[s][\color{orange}]"",
+    commentstyle=\color{commentgreen},
+    keywordstyle=\color{eminence},
+    keywordstyle=[2]\color{pink},
+    keywordstyle=[3]\color{mygreen},
+    stringstyle=\color{red},
+	basicstyle=\ttfamily,
+	breaklines,
+	showstringspaces=false,
+	frame=tb
+}
 
 \lstset{ 
   backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
@@ -34,7 +66,7 @@
   frame=single,	                   % adds a frame around the code
   keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
   keywordstyle=\color{blue},       % keyword style
-  language=Python,                 % the language of the code
+  language=Elixir,                 % the language of the code
   morekeywords={*,...},            % if you want to add more keywords to the set
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
@@ -83,19 +115,17 @@ Tokom 2010., Jose Valim, u to vreme zaposlen na poziciji programera u kompaniji 
 
 \section{BEAM - Erlang virtualna masina}
 
-Kako je Elixir zapravo nastao pro\v{s}irivanjem funkcionalnosti BEAM-a (Erlangove virtualne ma\v{s}ine), sa ciljem da se zadr\v{z}i kompatibilnost sa Erlang ekosistemom, va\v{z}no je opisati koncepte funkcionisanja Erlang virtualne ma\v{s}ine na kojoj se  kompajlirani Elixir kod izvr\v{s}ava.
+Kako je Elixir zapravo nastao proširivanjem funkcionalnosti BEAM-a (Erlangove virtualne mašine), sa ciljem da se zadrži kompatibilnost sa Erlang ekosistemom, važno je opisati osnovne koncepte funkcionisanja Erlang virtualne mašine na kojoj se  kompajlirani Elixir kod izvršava.
 
-Originalno BEAM je bila skra\'{c}enica za Bogdan's Erlang Abstract Machine, po Bogumil "Bogdan" Hausman koji je napisao originalnu verziju virtualne ma\v{s}ine, ali ime se takodje moze tuma\v{c}iti kao Björn's Erlang Abstract Machine, po Björn Gustavsson, koji pi\v{s}e i odr\v{z}ava trenutnu verziju.
+Originalno BEAM je bila skraćenica za Bogdan's Erlang Abstract Machine, po Bogumil "Bogdan" Hausman koji je napisao originalnu verziju virtualne mašine, ali ime se takođe moze tumačiti kao Björn's Erlang Abstract Machine, po Björn Gustavsson, koji piše i održava trenutnu verziju.
 
-BEAM predstavlja jezgro Erlang Open Telecom Platform (Erlang OTP), platforme koja se sastoji od Erlang Run-Time System(ERTS) i  kolekcije prebuilt middleware, biblioteka i alata pisanih u Erlangu.
+BEAM predstavlja jezgro Erlang Open Telecom Platform (Erlang/OTP), platforme koja se sastoji od Erlang Run-Time System(ERTS) i  kolekcije unapred kompajliranih middleware, biblioteka i alata pisanih u Erlangu.
 
-Erlang Run-Time System (ERTS) predstavlja modul zadu\v{z}en za kompilaciju Erlang i Elixir izvornog koda u bytecode koji se onda izvr\v{s}ava u okviru BEAM-a.
+Erlang Run-Time System (ERTS) predstavlja modul zadu\v{z}en za kompilaciju Erlang i Elixir izvornog koda u bytecode koji se onda izvršava u okviru BEAM-a.
 
-U okviru BEAM-a, sav kod se izvr\v{s}ava u sitnim konkurentnim procesima, pri \v{c}emu procesi nisu procesi operativnog sistema, vec Erlang procesi, \v{s}to je mogu\'{c}e upravo zbog izvr\v{s}avanja u okviru BEAM virtualne ma\v{s}ine. Svaki od procesa je memorijski nezavistan i sva me\dj{}uprocesna komunikacije se odvija razmenjivanje poruka, \v{c}ime se obezbe\dj{}uje koncept konkurentnosti slanjem poruka $(eng. message passing concurrency)$. 
+U okviru BEAM-a, sav kod se izvršava u sitnim konkurentnim procesima, pri čemu procesi nisu procesi operativnog sistema, vec Erlang procesi, što je moguće upravo zbog izvršavanja u okviru BEAM virtualne mašine. Svaki od procesa je memorijski nezavistan i sva međuprocesna komunikacije se odvija razmenjivanjem poruka, čime se obezbeđuje koncept konkurentnosti slanjem poruka \textit{(eng. message passing concurrency)}. 
 
-Prevodjenjem Elixir source fajla generise se .beam fajl koji sadrzi bytecode koji se moze izvrsavati u okviru BEAM-a.
-
-
+Prevo]enjem Elixir izvornog fajla generise se .beam fajl koji sadrzi bytecode koji se može izvršavati u okviru BEAM-a.
 
 \section{Osobine jezika}
 \label{sec:osobine}
@@ -109,14 +139,21 @@ Definicija \textit{pattern matching}-a bi glasila ovako: proveravanje da li se u
 U većini programskih jezika, operator = je operator dodele, koji levoj strani dodeljuje vrednost izraza na desnoj. U Elixiru ovaj operator, koji se naziva operator \textit{uparivanja} (eng:\textit{matching}) ima drugačiju funkciju koja više podseća na \textit{assertion}. On se uspešno izvršava ako pronađe načina da izjadnači levu stanu (svoj prvi operand) \textit{sa} desnom (drugi perand).
 \begin{primer}
 U narednom parčetu koda \textit{a} je promenljiva koja uspeva da se izjednači sa vrednoću 1, tako sto biva postavljena na tu vrednost. U drugoj naredbi izvršavanje operacije ponovo uspeva jer je vrednost leve strane 1 dok promenljiva sa desne strane već ima vrednost 1 zbog prethodne operacije. Neuspeh sledeće naredbe može izgledati neintuitivno, ali kada se bolje pogleda objašnjenje ove operacija trebalo bi da bude jasno. Naime, Elixir pokušava da izjednači levu stranu, koja je broj 2, koji može imati samo tu vrednosti, sa promenjivom \textit{a} koja ima vrednost 1. Ključna stvar za razumeti je da Elixir ne pokušava da izjednači levu \textit{i} desnu stranu, već levu \textit{sa} desnom.
-(TODO: kod)
 \end{primer}
+\begin{lstlisting}[caption={Primer jednostavnog pattern matchinga},frame=single, label=simple]
+iex> a = 1
+# 1
+iex> 1 = a
+# 2
+iex> 2 = a
+#(MatchError) no match of right hand side value: 1
+\end{lstlisting}
 \subsection{Imutabilnost}
 \label{sec:tipovi}
-
+Imajući na umu funkcionalnu paradigmu Elixira, imutabilnost podataka je osobina koja je neizostavna. Naime, jednom kreirani podaci ne mogu mogu biti promenjeni. Bez ulaženja u dublje analize rasprava o tome da li je mutabilnost podataka dobra ili loša, činjenica je da postojanje stanja i funkcija, koje to stanje mogu menjati u izrazima sa bočnim efektima, otežava razumevanje i još bitnije, utvrđivanje korektnosti funkcionisanja sistema. Pogotovo u slučaju višenitnih, konkurentnih ili distribuiranih programa, kakvi se najčešće pišu korićenjem Elixir programskog jezika. 
 \subsection{Ugrađeni tipovi}
 \label{sec:tipovi}
-Elixir implementira desetine tipova. Od njih je važno istaći ugradjene - primitivne tipova, preko kojih su ostali definisani:
+Elixir implementira desetine tipova. Od njih je važno istaći ugradjene - primitivne tipova, preko kojih su realizovane implementacije ostalih:
 \begin{itemize}
   \item Atomi (\textit{Atom})
   \item Celi brojevi (\textit{Integer})
@@ -160,10 +197,19 @@ Može biti čudno što se na ovoj listi nisu našle niske ili strukture, ali one
 
 \subsubsection{Liste}
 \label{sec:ime}
-(t: Mozda pre tipova immutabilnost i pattern matching zbog ovoga)
+\textit{Lista} je kolekcijski tip koji je imlementiran kao povezana lista. Ova osobina čini da je pristup proizvoljnom elementu složenosti \( O(n) \). Lista može biti prazna ili sastavljena od glave i tela, gde je glava element liste, a telo je lista. Primećuje se rekurzivna definicija liste koja je zajedno sa operacijom izdvajanja glave od tela (koja je pritom efikasna znajući strukturu implementacije) osnov za mnoge programerske prakse u Elixiru. Pošto je kao i svi podaci, lista u Elixiru imutabilna, čitalac može pomisliti da će pri prethodno navedenom operaciji biti napravljena nova lista koja će predstavljati rep prethodne. Ovo bi bilo memorijski, pa i vremenski vrlo neefikasno pa je u eliksiru implementirano tako što će umesto nove liste biti vraćen pokazivač na rep prethodne.
+
 \subsubsection{Mape}
 \label{sec:ime}
-
+\textit{Mapa} je kolekcija koja sadrži parove ključeva i vrednosti. Glavna razlika između liste parova ključeva i vrednosti i mape leži u tome da je mapa asocijativna struktura podataka i samim tim ne dozvoljava duplirane vrednosti ključa. Mapa je vrlo efikasna, pogotovo sa rastom količine podataka. Ukoliko sam je ipak potrebno da u kolekciji podaci ostanu u redosledu u kome su navedeni pri inicijalizaciji, lista parova je bolji izbor. One se najčešće koriste kako bi se funkcijama prosledile opcije. U ostalim slučajevima, mapa je uglavnom bolji izbor.
+\begin{primer}
+Primer inicijalizacije liste parova ključeva i vrednosti, za koje korišćena skraćenica obezbedjena u Elixiru zbog čestog koriščenja i mape sa istim vrednostima. Parovi u listi su tipa torke, ključevi su atomi dok su vrednosti niske.
+\end{primer}
+\begin{lstlisting}[caption={Primer liste parova ključeva i vrednosti i mape},frame=single, label=simple]
+list = [key1: "value1", key2: "value2", key3: "value3"]
+# interno: [ {:key1,"value1"}, {:key2,"value2"}, {:key3,"value3"} ]
+map = %{:key1 => "value1",:key2 => "value2",:key3 => "value3"}
+\end{lstlisting}
 \subsection{Anonimne funkcije}
 \label{sec:ime}
 
@@ -265,63 +311,39 @@ end
 \end{verbatim}
 Ovi atributi nisu promenljive u konvencionalnom smislu, i uglavnom se upotrebljavaju kao što Java ili Ruby programeri upotrebljavaju konstante.
 \section{Instalacija}
-Pre instalacije Elixira neophodno je instalirati Erlang na odgovarajucem operativnom sistemu.
-\begin{itemize}
-    \item Ako koristite operativni sistem Windows, instaliranje Erlang-a je jednostavno. Preuzmite Windows binary fajl, a zatim ga pokrenite i postavite instalaciju. 
-    \item Ako koristite operativni sistem Linux, možete preuzeti izvornu datoteku i kompajlirati je. Ako pristup kompilacije ne funkcioniše ili nije za vas, Erlang Solutions nudi brojne instalacije. Takođe, mnogi različiti upravljači paketima (Debian, Ubuntu, MacPorts, Homebrev, itd.) uključuju Erlang.  Oni teže da rade na najnovijoj verziji različitih operativnih sistema. Erlang je sve više deo standardne instalacije na mnogim sistemima, uključujući i Ubuntu, uglavnom zahvaljujući širenju CouchDB-a. Nakon što ste instalirali Erlang, možete preuzeti prekompiliranu verziju Elixir-a. Neki menadžeri paketa podržavaju Elixir.
-\end{itemize}
-Nakon instalacije imatćete tri nove izvršne datoteke: iex, elixir i elixirc. Ako ste kompajlirali Elixir možete ih pronaći u bin direktoriju. 
-Fajl čuvate sa ekstenzijom .exs, a komandom elixir imeFajla.exs pokrecete program.
-Komande za instalaciju na Ubuntu 14.04/16.04/17.04/18.04 or Debian 7/8/9:
-\begin{itemize}
-%    \item Erlang Solutions repo: wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
-    \item sudo apt-get update
-    \item Instalacija Elixir/OPT: sudo apt-get install esl-erlang
-    \item Instalacija Elixir: sudo apt-get install elixir
-\end{itemize}
-
+Pre instalacije Elixira neophodno je instalirati Erlang na odgovarajucem operativnom sistemu. Mnogi različiti upravljači paketima (Debian, Ubuntu, MacPorts, Homebrev, itd.) uključuju Erlang.  Oni teže da rade na najnovijoj verziji različitih operativnih sistema. Erlang je sve više deo standardne instalacije na mnogim sistemima, uključujući i Ubuntu, uglavnom zahvaljujući širenju CouchDB-a. Nakon instalacije Erlang-a može se instalirati Elixir. 
+\subsection{Linux}    
+Ako koristite operativni sistem Linux, Elixir se može instalirati komandom sudo {\em apt-get install elixir}. Nakon instalacije, elixir programi se mogu kompajlirati i pokretati u interpreteru. Kôd iz datoteke se može kompajlirati komandom {\em elixir} iza koje se navodi ime fajla sa ekstenzijom {\em .exs}.
+\subsection{Windows}    
+Ako koristite operativni sistem Windows, instaliranje Elixir-a je jednostavno. Sa oficijalnog sajta Elixir-a se preuzme binarna datoteka i prati se uputstvo do završetka instalacije. 
+ %\cite{sajt}
 \section{Primer}
 Lalalala
 
-\section{Frameworks}
-Open source Elixir frameworks:
+\section{Okruženja} 
+Elixir je dizajniran da bude proširiv, omogućuje programerima da prirodno prošire jezik na određene domene, kako bi povećali svoju produktivnost. Danas se najviše koristi za veb programiranje, ali ima udela i u projektima vezanim za robotiku. Različiti delovi koda se mogu pokrenuti u različitim procesima i mogu komunicirati međusobno. Veoma je tolerantan na kreške. Koristi OTP (Open Telecom Platform) koji jeziku omogućava da ukoliko se desi neka greška u vašem kodu, samo taj proces stane i onda se restartuje. S obzirom na to da je kod paralelizovan, ta greška neće uticati na ostale procese.
+
+Neki od open source Elixir okruženja su:
 \begin{itemize}
-    \item Phoenix Framework - Pruža jednostavnost u pisanju veb aplikacija kombinovanjem poznatih i poverljivih tehnologija sa dodatnim funkcionalnim idejama. Phoenix alpikacija zavisi od paketa:
-    \begin{itemize}
-        \item Ecto - jezik integrisan upitima i omotom baze podataka
-        \item Phoenix - Phoenix veb framework
-        \item Phoenix.js - Phoenix Channels JavaScript klijent
-        \item Phoenix PubSub - distribuirani pub/sub sistem sa podrškom za prisustvo
-        \item Phoenix HTML - pogodnosti za rad sa HTML-om u Phoenix-u
-        \item Plug - specifikacija i pogodnosti za kompatibilne module između veb aplikacija
-        \item Gettext - *internacionalizacija i lokalizacija kroz gettext
-    \end{itemize}
-    Postoje i opcioni paketi u zavisnosti od vaše konfiguracije.
+    \item Phoenix Framework - Pruža jednostavnost u pisanju veb aplikacija kombinovanjem poznatih i poverljivih tehnologija sa dodatnim funkcionalnim idejama. Phoenix alpikacija zavisi od paketa: Ecto, Phoenix, Phoenix.js, Phoenix PubSub , Phoenix HTML. Postoje i opcioni paketi u zavisnosti od vaše konfiguracije.
 
     \item Nerves - Definiše novi način za izgradnju ugrađenih sistema koristeći Elixir. Posebno dizajniran za ugrađene sisteme, a ne za desktop ili serverske sisteme. 
     \begin{itemize}
-        \item Platform - napravljene po zahtevu, minimalni Linux izvedeni iz Buildroot-a koji se pokreće direktno na BEAM VM
+        \item Platform - napravljena po zahtevu, minimalni Linux izveden iz Buildroot-a koji se pokreće direktno na BEAM VM
         \item Framework - spremna biblioteka modula Elixir-a za brzo pokretanje
         \item Tooling - moćne alatke komandne linije za upravljanje gradnjom, ažuriranje firmware-a, konfigurisanje uređaja i još mnogo toga
     \end{itemize}
     Zajedno, platforma Nerves, okvir i alati pružaju visoko specijalizovano okruženje za korišćenje Elixir-a.
-    \item Sugar - 
     \item Hedwig - Dizajniran za dva slučaja upotrebe: 
     \begin{itemize}
         \item jedinstvene, samostalne OTP aplikacije
         \item uključen kao zavisnost od drugih OTP aplikacija
     \end{itemize}
-%    You can spawn multiple bots at run-time with different configurations.
     Hedwing se isporučuje sa adapteron za konzolu kako bi omogućio brzo pokretanje. Odličan je za testiranje kako će bot odgovoriti na poruke koje dobije.
     \item Plug je specifikacija za *composable modele između veb aplikacija i adapteri za konekciju za različite veb servere u Erlang VM.
     \item Trot je mirko-okvir baziran na Plug-u i Cowboy-u. Cilj Trot-a je da olakša upotrebu uobičajnih obrazaca u Plug-u, posebno prilikom pisanja API-ja bez žrtvovanja fleksibilnosti.
-    \item Placid
-    \item Kitto
-    \item Maru
-    \item Anubis omogućuje kreiranje aplikacije komandne linije uz pomoć više komandi (kao što je git), bez potrebe da definiše više miks zadataka. 
-    %Može biti korisno kada se izvoze aplikacije komandne linije kao escript. 
-    \item Urna
-    \item Flowex
+     \item Anubis omogućuje kreiranje aplikacije komandne linije uz pomoć više komandi (kao što je git), bez potrebe da definiše više miks zadataka. 
+    \item Placid, Kitto, Maru, Sugar, Urna, Flowex
 \end{itemize}
 
 \section{Napredni koncepti}
@@ -329,10 +351,9 @@ Open source Elixir frameworks:
 \section{Poredjenje}
 
 
-%2. Elixir je dizajniran da bude proširiv, omogućavajući developerima da prirodno prošire jezik na određene domene, kako bi povećali svoju produktivnost. Danas se najvise koristi za web programiranje, ali ima udela i u projektima vezanim za robotiku.
+%2.
 % Pošto je Elixir izgrađen na makroima lako je pomisliti da ih svaka biblioteka zahteva, međutim to nije slučaj. Makroi treba da budu rezervisani za specijalizovane slučajeve gde rešenje ne može biti lako implementirano kao obične funkcije, jer se vrši generisanje koda. U nekim slučajevima, izbor makronaredbi je neophodan.Glavna odgovornost pisanja čistog koda sa makroima pada na programere. Makroe je teže pisati od običnih funkcija Elixir-a i smatra se lošim stilom da ih koristimo kada nisu neophodni. Elixir već pruža mehanizme za pisanje vašeg svakodnevnog koda na jednostavan i čitljiv način koristeći svoje strukture podataka i funkcije. Makroe treba koristiti samo kao krajnje sredstvo. 
 
-%3. Možemo pisati kôd koji se pokreće paralelno. Elixir kôd se pokreće unutar Elixir procesora. Različiti delovi kôda se mogu pokrenuti u različitim procesima i mogu komunicirati međusobno. Veoma je tolerantan na greške. Koristi OTP (Open Telecom Platform) što je framework za Erlang koji jeziku omogućava da ukoliko se desi neka greška u vašem kôdu, samo taj proces stane i onda se restartuje. S obzirom na to da je kôd paralelizovan, ta greška neće uticati na ostale procese.
 
 \section{Osnovna uputstva}
 Vaš seminarski rad mora da sadrži najmanje jednu \textbf{sliku}, najmanje jednu \textbf{tabelu} i najmanje \textbf{sedam referenci} u spisku literature. Najmanje jedna slika treba da bude originalna i da predstavlja neke podatke koje ste Vi osmislili da treba da prezentujete u svom radu. Isto važi i za najmanje jednu tabelu. 	Od referenci, neophodno je imati bar jednu \textbf{knjigu}, bar jedan \textbf{naučni članak} iz odgovarajućeg časopisa i bar jednu adekvatnu \textbf{veb adresu}. 
@@ -460,6 +481,22 @@ except ValueError:
     print 'Please supply integer arguments'
 \end{lstlisting}
 
+\begin{lstlisting}[caption={Primer često zadavanog zadatka Fizzbuzz},frame=single, label=simple]
+# This program adds up integers in the command line
+iex> 
+play = fn
+  0,0,_ -> "Fizzbuzz"
+  0,_,_ -> "Fizz"
+  _,0,_ -> "Buzz"
+  _,_,c -> "#{c}"
+end
+
+IO.puts play.(0,1,2)
+play.(0,0,3)
+play.(1,0,2)
+play.(1,2,15)
+\end{lstlisting}
+
 
 \section{Prvi naslov}
 \label{sec:naslov1}
@@ -567,3 +604,4 @@ Ovde pišem dodatne stvari, ukoliko za time ima potrebe.
 
 
 \end{document}
+
